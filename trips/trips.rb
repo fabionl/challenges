@@ -3,6 +3,10 @@ class Trip
 
   def initialize(data)
     @data = data
+    @valid_combinations = nil
+    @valid_walks = nil
+    @full_walks = nil
+    @build = nil
   end
 
   def highest
@@ -14,34 +18,55 @@ class Trip
   end
 
   def build
-    walk_idx = data.length.times.to_a
-      .combination(2)
-      .reject { |first, second| (second - first) < 2 }
-    combined_walk = {}
-    walk_idx.each do |idx1, idx2|
-      combined_walk[idx1] ||= []
-      combined_walk[idx1] << idx2
-    end
-    result = {}
+    return @build unless @build.nil?
 
-    combined_walk.each_pair do |base_idx, opts|
-      result[base_idx] ||= []
+    @build = full_walks.map do |idx_list|
+      idx_list.map { |idx| data[idx] }
+    end
+  end
+
+  private
+
+  def full_walks
+    return @full_walks unless @full_walks.nil?
+
+    @full_walks = []
+    valid_walks.each do |key, values|
+      @full_walks += values.map{|v| [key] + v }
+    end
+
+    @full_walks
+  end
+
+  def valid_walks
+    return @valid_walks unless @valid_walks.nil?
+
+    next_walk_hash = {}
+    valid_combinations.each do |idx1, idx2|
+      next_walk_hash[idx1] ||= []
+      next_walk_hash[idx1] << idx2
+    end
+
+    @valid_walks = {}
+    next_walk_hash.each_pair do |base_idx, opts|
+      @valid_walks[base_idx] ||= []
       opts.each do |idx|
-        if combined_walk.key?(idx)
-          combined_walk[idx].each do |next_idx|
-            result[base_idx] << [idx, next_idx]
+        if next_walk_hash.key?(idx)
+          next_walk_hash[idx].each do |next_idx|
+            @valid_walks[base_idx] << [idx, next_idx]
           end
         else
-          result[base_idx] << [idx]
+          @valid_walks[base_idx] << [idx]
         end
       end
     end
-    r = []
-    result.each do |key, values|
-      r += values.map{|v| [key] + v }
-    end
-    r.map do |idx_list|
-      idx_list.map { |idx| data[idx] }
-    end
+
+    @valid_walks
+  end
+
+  def valid_combinations
+    @valid_combinations ||= data.length.times.to_a
+      .combination(2)
+      .reject { |first, second| (second - first) < 2 }
   end
 end
