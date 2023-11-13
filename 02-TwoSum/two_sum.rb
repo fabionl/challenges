@@ -8,7 +8,7 @@ def two_sum(nums, target)
     next_idx = n + 1
     base_num = nums[n]
 
-    potential = compliments[target - n]
+    potential = compliments[target - base_num]
     return [n, potential] if !potential.nil? && potential > n
 
     for t in (next_idx..last_idx) do
