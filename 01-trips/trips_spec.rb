@@ -1,5 +1,5 @@
 require "spec_helper"
-require_relative "../../trips/trips.rb"
+require_relative "./trips.rb"
 
 describe Trip do
   let(:data) { [10, 20, 40, 80, 160, 320] }
