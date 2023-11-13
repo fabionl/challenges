@@ -39,12 +39,18 @@ RSpec.describe "two_sum" do
     it { expect(result).to eq([2, 4]) }
   end
 
- 
-  fcontext "Case 3" do
+  context "Case 3" do
     let(:nums) { [2,1,9,4,4,56,90,3] }
     let(:target) { 8 }
 
     it { expect(result).to eq([3, 4]) }
+  end
+
+  context "Case 4" do
+    let(:nums) { [1,1,1,1,1,4,1,1,1,1,1,7,1,1,1,1,1] }
+    let(:target) { 11 }
+
+    it { expect(result).to eq([5, 11]) }
   end
  
 end
