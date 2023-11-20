@@ -40,4 +40,10 @@ RSpec.describe "length_of_longest_substring" do
     it { expect(result).to eq(2) }
   end
 
+  describe "Test" do
+    let(:input) { "abcabcabcabcabcabcabcabcdbbb" }
+
+    it { expect(result).to eq(4) }
+  end
+
 end
