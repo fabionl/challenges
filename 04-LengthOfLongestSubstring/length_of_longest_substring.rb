@@ -5,23 +5,21 @@ def length_of_longest_substring(s)
   size = chars.count
 
   best = []
-  current = []
-  i = 0
-  while i < size
-    char = chars[i]
+  chars.each_with_index do |char, idx|
+    current = [char]
+    t = idx + 1
 
-    if current.include?(char)
-      i = i - current.length
-      current = []
-    else
-      current << char
+    while t < size
+      next_char = chars[t]
+      break if current.include?(next_char)
+
+      current << next_char
+      t += 1
     end
 
-    if current.length > best.length
-      best = current
-    end
+    next unless current.length > best.length
 
-    i += 1
+    best = current
   end
 
   best.length
